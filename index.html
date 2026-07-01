@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Academic Performance Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,rgb(102,126,234),rgb(118,75,162));
+    min-height:100vh;
+    padding:20px;
+}
+
+.dashboard{
+    max-width:1400px;
+    margin:auto;
+}
+
+.header{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.avatar{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:rgb(118,75,162);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card h3{
+    margin-bottom:15px;
+    color:#333;
+}
+
+.progress{
+    background:#ddd;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:8px;
+}
+
+.progress-bar{
+    height:20px;
+    color:white;
+    text-align:center;
+    line-height:20px;
+}
+
+.attendance{background:#4CAF50;width:88%;}
+.course{background:#2196F3;width:75%;}
+.assignment{background:#FF9800;width:92%;}
+
+ul{
+    list-style:none;
+}
+
+li{
+    padding:8px 0;
+    border-bottom:1px solid #eee;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th, table td{
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:center;
+}
+
+table th{
+    background:#764ba2;
+    color:white;
+}
+
+.chart{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-around;
+    height:220px;
+    margin-top:10px;
+}
+
+.bar{
+    width:40px;
+    background:#667eea;
+    text-align:center;
+    color:white;
+    border-radius:5px 5px 0 0;
+}
+
+.calendar{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:5px;
+    text-align:center;
+}
+
+.day{
+    padding:10px;
+    background:#f0f0f0;
+    border-radius:5px;
+}
+
+.highlight{
+    background:#667eea;
+    color:white;
+}
+#attendanceBar{
+    background:#4CAF50;
+}
+.achievement{
+    font-size:18px;
+    margin:10px 0;
+}
+
+.insight{
+    background:#f5f5f5;
+    padding:10px;
+    border-left:5px solid #667eea;
+    margin-top:10px;
+}
+
+@media(max-width:768px){
+    .header{
+        text-align:center;
+    }
+
+    .profile{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="header">
+        <div class="profile">
+            <div class="avatar">T</div>
+            <div>
+                <h2>Trisha</h2>
+                <p><b>USN:</b> CS24182</p>
+                <p>B.E. Computer Science Student</p>
+            </div>
+        </div>
+
+        <div>
+            <h3>Student Academic Performance Dashboard</h3>
+            <p>Semester Progress Tracker</p>
+        </div>
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <h3>Attendance Record</h3>
+            <p>Current Attendance: 88%</p>
+            <div class="progress">
+                <div class="progress-bar attendance">88%</div>
+            </div>
+            <h3>Attendance</h3>
+<input type="number" id="attendanceInput"
+       min="0" max="100">
+<button onclick="updateAttendance()">
+Update
+</button>
+
+<div class="progress">
+    <div id="attendanceBar"
+         class="progress-bar"
+         style="width:0%">
+        0%
+    </div>
+</div>
+        </div>
+
+        <div class="card">
+            <h3>Course Completion</h3>
+            <p>Completed Syllabus: 75%</p>
+            <div class="progress">
+                <div class="progress-bar course">75%</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Assignment Status</h3>
+            <p>Assignments Submitted: 92%</p>
+            <div class="progress">
+                <div class="progress-bar assignment">92%</div>
+            </div>
+            <h3>Add Assignment</h3>
+<input type="text"
+       id="assignmentName"
+       placeholder="Assignment Name">
+
+<input type="date"
+       id="assignmentDate">
+
+<button onclick="addAssignment()">
+Add Assignment
+</button>
+
+<ul id="assignmentList"></ul>
+
+<hr>
+
+        </div>
+
+        <div class="card">
+            <h3>Upcoming Assignments</h3>
+            <ul>
+                <li>Web Technology Project - July 5</li>
+                <li>DBMS Assignment - July 8</li>
+                <li>Python Lab Report - July 10</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Examination Schedule</h3>
+            <table>
+                <tr>
+                    <th>Subject</th>
+                    <th>Date</th>
+                </tr>
+                <tr>
+                    <td>Web Technology</td>
+                    <td>20 Jul</td>
+                </tr>
+                <tr>
+                    <td>DBMS</td>
+                    <td>23 Jul</td>
+                </tr>
+                <tr>
+                    <td>Computer Networks</td>
+                    <td>26 Jul</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>Academic Performance</h3>
+            <div class="chart">
+                <div class="bar" style="height:80%;">80</div>
+                <div class="bar" style="height:92%;">92</div>
+                <div class="bar" style="height:75%;">75</div>
+                <div class="bar" style="height:88%;">88</div>
+                <div class="bar" style="height:95%;">95</div>
+            </div>
+            <p align="center">WT | DBMS | CN | Java | Python</p>
+        </div>
+
+        <div class="card">
+            <h3>Achievements</h3>
+            <div class="achievement">🏆 Coding Contest Finalist</div>
+            <div class="achievement">🥇 Top 10% in Semester</div>
+            <div class="achievement">📜 Python Certification</div>
+            <h3>Add Achievement</h3>
+<input type="text"
+       id="achievementInput">
+
+<button onclick="addAchievement()">
+Add
+</button>
+
+<div id="achievementSection"></div>
+        </div>
+
+        <div class="card">
+            <h3>Announcements</h3>
+            <ul>
+                <li>Semester Project Review on July 12.</li>
+                <li>Hackathon Registration Open.</li>
+                <li>Library Books Renewal Extended.</li>
+            </ul>
+            <h3>Add Announcement</h3>
+<input type="text"
+       id="announcementInput">
+
+<button onclick="addAnnouncement()">
+Post
+</button>
+
+<ul id="announcementList"></ul>
+        </div>
+
+        <div class="card">
+            <h3>Personal Calendar</h3>
+            <div class="calendar">
+                <div class="day">1</div>
+                <div class="day">2</div>
+                <div class="day">3</div>
+                <div class="day">4</div>
+                <div class="day highlight">5</div>
+                <div class="day">6</div>
+                <div class="day">7</div>
+                <div class="day">8</div>
+                <div class="day">9</div>
+                <div class="day highlight">10</div>
+                <div class="day">11</div>
+                <div class="day">12</div>
+                <div class="day">13</div>
+                <div class="day">14</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Productivity Insights</h3>
+            <div class="insight">
+                📈 Attendance improved by 5% this month.
+            </div>
+            <div class="insight">
+                ✅ 12 assignments completed on time.
+            </div>
+            <div class="insight">
+                🎯 Focus on Computer Networks for better performance.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const today = new Date();
+
+    console.log("Dashboard Loaded");
+    console.log("Student: Trisha");
+    console.log("USN: CS24182");
+    console.log("Date:", today.toDateString());
+
+});
+function updateAttendance() {
+    let value = document.getElementById("attendanceInput").value;
+
+    document.getElementById("attendanceBar").style.width =
+        value + "%";
+
+    document.getElementById("attendanceBar").innerHTML =
+        value + "%";
+}
+
+function addAssignment() {
+    let name = document.getElementById("assignmentName").value;
+    let date = document.getElementById("assignmentDate").value;
+
+    let li = document.createElement("li");
+    li.innerHTML = name + " - " + date;
+
+    document.getElementById("assignmentList").appendChild(li);
+}
+
+function addExam() {
+    let subject = document.getElementById("examSubject").value;
+    let date = document.getElementById("examDate").value;
+
+    let row = document.createElement("tr");
+
+    row.innerHTML =
+        "<td>" + subject + "</td>" +
+        "<td>" + date + "</td>";
+
+    document.getElementById("examTable").appendChild(row);
+}
+
+function addAchievement() {
+    let achievement =
+        document.getElementById("achievementInput").value;
+
+    let p = document.createElement("p");
+    p.innerHTML = "🏆 " + achievement;
+
+    document.getElementById("achievementSection")
+        .appendChild(p);
+}
+
+function addAnnouncement() {
+    let text =
+        document.getElementById("announcementInput").value;
+
+    let li = document.createElement("li");
+    li.innerHTML = text;
+
+    document.getElementById("announcementList")
+        .appendChild(li);
+}
+</script>
+
+</body>
+</html>
